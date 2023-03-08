@@ -1,3 +1,6 @@
+// Le o valor de graus e o numero de termos, converte os graus para radianos e realiza a operacao
+// de seno e cosseno, utilizando a funcao da biblioteca cmath e as series de Mclaurin
+
 #include <iostream>
 #include <cstdlib>
 #include <cmath>

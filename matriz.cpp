@@ -11,8 +11,7 @@ int maiori, maiorj;
 
 //--------------------------------------------------//
 
-int main()
-{
+int main(){
 
     srand(time(0));
 
@@ -26,35 +25,28 @@ int main()
 
     int matriz[linhas][colunas]; 
 
-    for (int i = 0; i < linhas; i++)
-    {
-        for (int j = 0; j < colunas; j++)
-        {
+    for (int i = 0; i < linhas; i++){
+        for (int j = 0; j < colunas; j++){
             
             matriz[i][j] = rand()%100; // Gera um valor para a posição determinada
 
-            if (matriz[i][j] < 10)
-            {
+            if (matriz[i][j] < 10){
                 cout << " " << setfill('0') << setw(2) << matriz[i][j] << " "; // Por estética, adiciona um 0 na frente
             }                                                                  // caso o valor tenha apenas um digito
-            else
-            {
+            else{
                 cout << " " << matriz[i][j] << " ";
             }
 
-            if (j == colunas - 1)
-            {
+            if (j == colunas - 1){
                 cout << endl;
             }   
 
-            if (matriz[i][j] > maiorvalor) // Seleciona o maior valor e sua posição até então
-            {
+            if (matriz[i][j] > maiorvalor){ // Seleciona o maior valor e sua posição até então
                 maiorvalor = matriz[i][j];
                 maiori = i, maiorj = j;
             }
 
-            if (linhas == colunas)
-            {
+            if (linhas == colunas){
                 if (i == j)
                 {
                     somadiagonal = matriz[i][j] + somadiagonal; // Soma os valores da diagonal principal
@@ -73,8 +65,7 @@ int main()
 
     cout << "O maior valor foi o da matriz [" << maiori << "][" << maiorj << "]: " << maiorvalor << endl;
     
-    if (linhas == colunas)
-    {
+    if (linhas == colunas){
         cout << "O maior valor da matriz secundaria foi: " << maiorvalorsecundaria << endl;
         cout << "A soma dos valores da diagonal principal e: " << somadiagonal;
     }
