@@ -2,7 +2,6 @@
 // funcoes para criar e exibir as estruturas dentro da array
 
 #include <iostream>
-#include <cstdlib>
 using namespace std;
 
 int numalunos = 0;

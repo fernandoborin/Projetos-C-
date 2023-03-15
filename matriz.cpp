@@ -2,7 +2,6 @@
 // e fornece uma série de informações sobre a matriz em questão
 
 #include <iostream>
-#include <cstdlib>
 #include <iomanip>
 using namespace std;
 

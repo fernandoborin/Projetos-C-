@@ -2,7 +2,6 @@
 // de seno e cosseno, utilizando a funcao da biblioteca cmath e as series de Mclaurin
 
 #include <iostream>
-#include <cstdlib>
 #include <cmath>
 using namespace std;
 
