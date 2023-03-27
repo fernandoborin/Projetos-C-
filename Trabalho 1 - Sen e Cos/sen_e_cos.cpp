@@ -2,6 +2,8 @@
 // e cosseno utilizando a funcao de cmath e series de Taylor, e ao fim calcula o erro entre ambas
 
 // Fernando Perez Borin - 2125219
+// Gustavo Soatto Santos - 2141790
+// Julio Fábio Dos Santos Melo - 2165170
 
 #include <iostream>
 #include <cmath>
@@ -15,7 +17,8 @@ int main(){
 
     int i, termos, sinal = 1;
 
-    cout << "Digite o valor do angulo em graus: ";
+    cout << "-----------------------------------------" << endl << endl
+         << "Digite o valor do angulo em graus: ";
     cin >> graus;
 
     cout << "Digite o numero de termos da serie: ";
@@ -43,7 +46,9 @@ int main(){
     porcentagem_cos = abs((erro_cos * 100) / cmath_cos);
     porcentagem_sin = abs((erro_sin * 100) / cmath_sin);
 
-    cout << "O valor de " << graus << " graus em radianos e " << radianos << endl << endl
+    cout << "-----------------------------------------" << endl << endl
+
+         << "O valor de " << graus << " graus em radianos e: " << radianos << endl << endl
 
          << "O valor do Cosseno, usando a funcao da biblioteca cmath e: " << cmath_cos << endl
          << "O valor do Cosseno, usando as series de Taylor e: " << cos_taylor << endl << endl
@@ -57,7 +62,9 @@ int main(){
 
          << "O erro entre o calculo do seno da biblioteca " << endl
          << "cmath e as series de Taylor e de: " << erro_sin << endl
-         << "que equivale a uma margem de erro de " << porcentagem_sin << "%" << endl << endl;
+         << "que equivale a uma margem de erro de " << porcentagem_sin << "%" << endl << endl
+
+         << "-----------------------------------------" << endl << endl;
 
     return 0;
 }
