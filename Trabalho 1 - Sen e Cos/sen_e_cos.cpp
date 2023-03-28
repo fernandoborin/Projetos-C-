@@ -11,7 +11,7 @@ using namespace std;
 
 int main(){
 
-    float graus, radianos, pi = 3.14159265359,
+    long double graus, radianos, pi = 3.14159265359,
           cmath_cos = 1.0, cos_taylor = 0.0, cos_termo = 1.0, erro_cos = 1.0, porcentagem_cos = 1.0,
           cmath_sin = 1.0, sin_taylor = 0.0, sin_termo = 1.0, erro_sin = 1.0, porcentagem_sin = 1.0;
 
