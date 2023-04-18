@@ -1,3 +1,5 @@
+// Usa erase e insert para editar uma string
+
 #include <iostream>
 #include <string>
 
@@ -11,7 +13,7 @@ int main(){
     stringOriginal.erase(7, 6); // Apaga as palavras "aluno" e "escola"
     stringOriginal.erase(10, 7);
 
-    stringOriginal.insert(7, "estudante "); // Insere as palavras"estudante" e "universidade"
+    stringOriginal.insert(7, "estudante "); // Insere as palavras "estudante" e "universidade"
     stringOriginal.insert(20, "universidade ");
 
     cout << stringOriginal << endl;

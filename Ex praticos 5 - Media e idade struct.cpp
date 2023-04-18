@@ -1,3 +1,4 @@
+// Lê a média e idade do aluno e adiciona em uma struct
 #include <iostream>
 #include <cstdlib>
 using namespace std;

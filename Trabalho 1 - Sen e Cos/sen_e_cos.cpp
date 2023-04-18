@@ -7,15 +7,16 @@
 
 #include <iostream>
 #include <cmath>
+#include <iomanip>
 using namespace std;
 
 int main(){
 
     long double graus, radianos, pi = 3.14159265359,
-          cmath_cos = 1.0, cos_taylor = 0.0, cos_termo = 1.0, erro_cos = 1.0, porcentagem_cos = 1.0,
+          cmath_cos = 1.0, cos_taylor = 1.0, cos_termo = 1.0, erro_cos = 1.0, porcentagem_cos = 1.0,
           cmath_sin = 1.0, sin_taylor = 0.0, sin_termo = 1.0, erro_sin = 1.0, porcentagem_sin = 1.0;
 
-    int i, termos, sinal = 1;
+    int i, termos = 1;
 
     cout << "-----------------------------------------" << endl << endl
          << "Digite o valor do angulo em graus: ";
@@ -30,17 +31,17 @@ int main(){
     for (i = 1; i <= termos; i++){
 
        cos_termo = pow(radianos, 2 * i) / tgamma(2 * i + 1); // Series de Taylor para o cosseno
-       cos_taylor += pow(sinal, i) * cos_termo;
+       cos_taylor += pow(-1, i) * cos_termo;
 
        sin_termo = pow(radianos, 2 * i + 1) / tgamma(2 * i + 1); // Series de Taylor para o seno
-       sin_taylor += pow(sinal, i) * sin_termo;
+       sin_taylor += pow(-1, i) * sin_termo;
 
     }
 
     cmath_cos = cos(radianos);
     cmath_sin = sin(radianos);
 
-    erro_cos = abs(cmath_cos - cos_taylor);
+    erro_cos = abs(cmath_cos) - (cos_taylor);
     erro_sin = abs(cmath_sin - sin_taylor);
 
     porcentagem_cos = abs((erro_cos * 100) / cmath_cos);

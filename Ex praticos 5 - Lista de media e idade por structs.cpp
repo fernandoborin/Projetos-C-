@@ -1,3 +1,6 @@
+// Recebe o numero de alunos e recebe as informações
+// de cada um deles por meio de structs
+
 #include <iostream>
 #include <cstdlib>
 using namespace std;

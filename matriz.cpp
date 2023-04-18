@@ -5,12 +5,9 @@
 #include <iomanip>
 using namespace std;
 
-int linhas, colunas, maiorvalor, maiorvalorsecundaria, somadiagonal = 0;
-int maiori, maiorj;
-
-//--------------------------------------------------//
-
 int main(){
+    int linhas, colunas, maiorvalor, maiorvalorsecundaria, somadiagonal = 0;
+    int maiori, maiorj;
 
     srand(time(0));
 

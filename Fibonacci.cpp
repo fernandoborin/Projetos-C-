@@ -1,3 +1,5 @@
+// Imprime uma sequência de Fibonacci até o termo recebido
+
 #include <iostream>
 using namespace std;
 
