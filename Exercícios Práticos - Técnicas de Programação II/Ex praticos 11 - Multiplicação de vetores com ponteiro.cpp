@@ -13,7 +13,7 @@ void imprimirVetor(int *vetor, int *tamanho){
 
 void multiplicarVetores(int *vetor1, int *vetor2, int *tamanho){
     for (int i = 0; i < *tamanho; i++){
-        vetor1[i] = vetor1[i] * vetor2[i];
+        *(vetor1 + i) = *(vetor1 + i) * (*(vetor2 + i));
     }
 }
 

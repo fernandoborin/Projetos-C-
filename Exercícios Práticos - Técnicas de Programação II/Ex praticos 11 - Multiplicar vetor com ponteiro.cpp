@@ -3,8 +3,8 @@ using namespace std;
 
 void multiplicarVetor(int *vet, int tamanho, int multiplicador){
     for (int i = 0; i < tamanho; i++){
-        vet[i] = vet[i] * multiplicador;
-        cout << vet[i] << " ";
+        *(vet + i) = *(vet + i) * multiplicador;
+        cout << *(vet + i) << " ";
     } 
 
     cout << endl;
