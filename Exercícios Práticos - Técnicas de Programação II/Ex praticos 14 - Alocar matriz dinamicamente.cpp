@@ -38,6 +38,14 @@ void somarMatriz(int **matriz, int linhas, int colunas, int soma){ // Faz a soma
     cout << endl << "A soma dos valores da matriz e: " << soma;
 }
 
+void deletarMatriz(int **matriz, int linhas){
+    for (int i = 0; i < linhas; i++){ // Libera individualmente a memoria alocada de cada vetor de linhas
+        delete[] matriz[i];   
+    }
+
+    delete[] matriz; // Libera a memoria alocada do vetor final como um todo
+}
+
 int main(){
     int linhas, colunas, soma = 0;
     int **matriz;
@@ -60,9 +68,6 @@ int main(){
 
     somarMatriz(matriz, linhas, colunas, soma);
 
-    for (int i = 0; i < linhas; i++){ // Libera individualmente a memoria alocada de cada vetor de linhas
-        delete[] matriz[i];   
-    }
-
-    delete[] matriz; // Libera a memoria alocada do vetor final como um todo
+    deletarMatriz(matriz, linhas);
+    
 }
