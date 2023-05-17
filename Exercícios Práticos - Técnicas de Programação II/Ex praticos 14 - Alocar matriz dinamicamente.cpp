@@ -69,5 +69,5 @@ int main(){
     somarMatriz(matriz, linhas, colunas, soma);
 
     deletarMatriz(matriz, linhas);
-    
+
 }
