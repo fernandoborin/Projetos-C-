@@ -6,7 +6,8 @@ using namespace std;
 struct structFlor{
     float comprimentoFlor = 0;
     float larguraFlor = 0;
-    string nomeFlor;
+    string especieFlor;
+    bool representanteGrupo = 0;
 };
 
 // Conta o número de linhas do arquivo
@@ -21,7 +22,7 @@ void contadorNumLinhas(int& numLinha, string linhaArquivo){
 }
 
 // Lê o arquivo e preenche a struct com os dados encontrados
-void preencherStructFlores(int numLinha, string linhaArquivo, string dadosFlor, string* bufferDadosFlor, structFlor*& structFlores){
+void preencherStructFlores(structFlor*& structFlores, int numLinha, string linhaArquivo, string dadosFlor, string* bufferDadosFlor){
     ifstream irisPetalas("iris_petalas.csv", ios::in);
 
     structFlores = new structFlor[numLinha]; // Aloca o número de linhas que o arquivo original possui
@@ -34,8 +35,8 @@ void preencherStructFlores(int numLinha, string linhaArquivo, string dadosFlor, 
         while (getline(linhaAtual, dadosFlor, ',')){ // Distribui os dados no buffer 
             bufferDadosFlor[i] = dadosFlor;
 
-            if (bufferDadosFlor[i].back() == '"'){ // Identifica o nome da espécie
-                structFlores[j].nomeFlor = bufferDadosFlor[i];
+            if (bufferDadosFlor[i].back() == '"'){ // Identifica a espécie
+                structFlores[j].especieFlor = bufferDadosFlor[i];
 
             }
 
@@ -63,23 +64,59 @@ void preencherStructFlores(int numLinha, string linhaArquivo, string dadosFlor, 
     irisPetalas.close();
 }
 
+// Seleciona aleatoriamente k representantes de grupo
+void escolherRepresentantes(structFlor*& structFlores, int k, int numLinha){
+    srand(time(0));
+
+    for (int i = 0; i < k; i++){
+        structFlores[1 + rand() % numLinha].representanteGrupo = 1;
+    }
+
+}
+
 int main(){
-    int numLinha = 0;
+    int numLinha = 0, k, x;
 
     string linhaArquivo, dadosFlor;
     string* bufferDadosFlor = new string[3]; 
 
     structFlor* structFlores = new structFlor[numLinha];
 
+    do {
+        cout << "Digite o numero de grupos (k): ";
+        cin >> k;
+
+        cout << "Numero de atualizacoes do representante (x): ";
+        cin >> x;
+
+        if (k < 1){
+            cout << "Ao menos um grupo deve ser digitado!" << endl;
+        }
+
+    } while (k < 1);
+
     contadorNumLinhas(numLinha, linhaArquivo);
 
-    preencherStructFlores(numLinha, linhaArquivo, dadosFlor, bufferDadosFlor, structFlores);
+    preencherStructFlores(structFlores, numLinha, linhaArquivo, dadosFlor, bufferDadosFlor);
 
-    for (int i = 1; i < numLinha; i++){
-        cout << "Flor " << i << endl
-             << "Comprimento struct float:" << structFlores[i].comprimentoFlor << endl
-             << "Largura struct float: " << structFlores[i].larguraFlor << endl
-             << "Nome struct string: " << structFlores[i].nomeFlor << endl << endl;
+    escolherRepresentantes(structFlores, k, numLinha);
+
+    for (int i = 1; i < numLinha; i++){ // Imprime as structs para testes
+        cout << "Flor " << i << " (Linha " << i + 1 << ")" << endl
+             << "Comprimento:" << structFlores[i].comprimentoFlor << endl
+             << "Largura: " << structFlores[i].larguraFlor << endl
+             << "Especie: " << structFlores[i].especieFlor << endl
+             << "Representante: " << structFlores[i].representanteGrupo << endl << endl;
     }
+
+    cout << endl;
+
+    for (int i = 0; i <= numLinha; i++){ // Imprime os representantes para testes
+        if (structFlores[i].representanteGrupo == 1){
+            cout << "A Flor " << i << " (Linha " << i + 1 << ") e representante de grupo!" << endl;
+        }
+    }
+
+    delete[] bufferDadosFlor;
     delete[] structFlores;
 }
