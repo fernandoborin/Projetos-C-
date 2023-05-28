@@ -29,8 +29,8 @@ int main(){
         cout << "Segunda nota: ";
         cin >> nota2;
 
-        dadosAlunos << numero << ", " << nome << ", " << curso << ", "
-                    << nota1 << ", " << nota2 << endl;
+        dadosAlunos << numero << " " << nome << " " << curso << " "
+                    << nota1 << " " << nota2 << endl;
 
         cout << endl << "Cadastrar outro aluno? S/N: ";
         cin >> resposta; 
