@@ -5,14 +5,21 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <algorithm>
 using namespace std;
 
 struct structFlor{
+    int numeroFlor;
     double comprimentoFlor = 0;
     double larguraFlor = 0;
+    double distanciaEuclidiana;
     string especieFlor;
     bool representanteGrupo = 0;
     int numeroGrupo;
+
+};
+
+struct structGrupo{
 
 };
 
@@ -29,7 +36,7 @@ void contadorNumLinhas(int& numLinha, string linhaArquivo){
 }
 
 // Lê o arquivo e preenche a struct com os dados encontrados
-void preencherStructFlores(structFlor*& structFlores, int numLinha, string linhaArquivo, string dadosFlor, string* bufferDadosFlor){
+void preencherStructFlores(structFlor*& structFlores, int& numLinha, string linhaArquivo, string dadosFlor, string* bufferDadosFlor){
     ifstream irisPetalas("iris_petalas.csv", ios::in);
 
     structFlores = new structFlor[numLinha]; // Aloca o número de linhas que o arquivo original possui
@@ -67,14 +74,18 @@ void preencherStructFlores(structFlor*& structFlores, int numLinha, string linha
         j++;
     }
 
+    for (int i = 1; i < numLinha; i++){ // Preenche o numero da flor na struct
+        structFlores[i].numeroFlor = i;
+    }
+
     irisPetalas.close();
 }
 
 // Seleciona aleatoriamente k representantes de grupo
-void escolherRepresentantes(structFlor*& structFlores, int*& vetorFloresRepresentantes, int k, int numLinha){
+void escolherRepresentantes(structFlor*& structFlores, int*& vetorRepresentantes, int k, int numLinha){
     srand(time(0));
 
-    vetorFloresRepresentantes = new int[k + 1];
+    vetorRepresentantes = new int[k + 1];
     int representanteSelecionado;
 
     for (int i = 1; i <= k; i++){
@@ -82,12 +93,12 @@ void escolherRepresentantes(structFlor*& structFlores, int*& vetorFloresRepresen
 
         structFlores[representanteSelecionado].representanteGrupo = 1;
 
-        vetorFloresRepresentantes[i] = representanteSelecionado;
+        vetorRepresentantes[i] = representanteSelecionado;
 
     }
 
     for (int i = 1; i <= k; i++){
-        cout << "Representante na variavel do grupo " << i << ": " << vetorFloresRepresentantes[i] << endl;
+        cout << "Representante do grupo " << i << ": " << vetorRepresentantes[i] << endl;
 
     }
 }
@@ -100,14 +111,49 @@ void alocarVetorDistanciaEuclidiana(double**& vetorDistanciaEuclidiana, int k, i
 }
 
 // Calcula a distância euclidiana entre o representante e as outras flores
-void distanciaEuclidiana(structFlor*& structFlores, int*& vetorFloresRepresentantes, double**& vetorDistanciaEuclidiana, int k, int numLinha){
-
+void distanciaEuclidiana(structFlor*& structFlores, int*& vetorRepresentantes, double**& vetorDistanciaEuclidiana, int k, int numLinha){
     for (int l = 1; l <= k; l++){
         for (int j = 1; j < numLinha; j++){
-            vetorDistanciaEuclidiana[l][j] = sqrt(pow(structFlores[vetorFloresRepresentantes[l]].comprimentoFlor - structFlores[j].comprimentoFlor, 2) + 
-            pow(structFlores[vetorFloresRepresentantes[l]].larguraFlor - structFlores[j].larguraFlor, 2));
+            vetorDistanciaEuclidiana[l][j] = sqrt(pow(structFlores[vetorRepresentantes[l]].comprimentoFlor - structFlores[j].comprimentoFlor, 2) + 
+            pow(structFlores[vetorRepresentantes[l]].larguraFlor - structFlores[j].larguraFlor, 2));
 
         }
+    }
+}
+
+// Distribui as flores entre os grupos pela primeira vez
+void distribuirGrupos(structFlor*& structFlores, double**& vetorDistanciaEuclidiana, int k, int numLinha){
+    for (int i = 1; i <= k; i++){
+        for (int j = 1; j < numLinha; j++){
+            structFlores[j].distanciaEuclidiana = vetorDistanciaEuclidiana[i][j];
+            structFlores[j].numeroGrupo = i;
+        }
+    }
+
+    for (int i = 1; i <= k; i++){
+        for (int j = 1; j < numLinha; j++){
+            if (structFlores[j].distanciaEuclidiana > vetorDistanciaEuclidiana[i][j]){
+                structFlores[j].distanciaEuclidiana = vetorDistanciaEuclidiana[i][j];
+                structFlores[j].numeroGrupo = i;
+            }
+        }
+    }
+}
+
+// Faz a media dos grupos e estabelece o novo representante
+void novoRepresentante(structFlor*& structFlores, double*& vetorMedia, int k, int numLinha){
+    vetorMedia = new double[k + 1];
+    int numFlores = 0;
+
+    for (int i = 1; i <= k; i++){
+        for (int j = 1; j < numLinha; j++){
+            if (structFlores[j].numeroGrupo == i){
+                vetorMedia[i] = vetorMedia[i] + structFlores[j].distanciaEuclidiana;
+                numFlores++;
+            }
+        }
+
+        vetorMedia[i] = vetorMedia[i] / numFlores;
     }
 }
 
@@ -115,8 +161,11 @@ void distanciaEuclidiana(structFlor*& structFlores, int*& vetorFloresRepresentan
 void criarNovoArquivo(structFlor*& structFlores, int numLinha){
     ofstream irisPetalas2("iris_petalas_2.csv", ios::out);
 
-    for (int i = 0; i < numLinha; i++){
-        irisPetalas2 << structFlores[i].comprimentoFlor << "," << structFlores[i].larguraFlor << "," << structFlores[i].especieFlor << endl;
+    irisPetalas2 << "Comprimento, Largura, Especie, Grupo" << endl;
+
+    for (int i = 1; i < numLinha; i++){
+        irisPetalas2 << structFlores[i].comprimentoFlor << "," << structFlores[i].larguraFlor
+                     << "," << structFlores[i].especieFlor << "," << structFlores[i].numeroGrupo << endl;
 
     }
 
@@ -125,9 +174,10 @@ void criarNovoArquivo(structFlor*& structFlores, int numLinha){
 
 int main(){
     int numLinha = 0, k, x;
-    int* vetorFloresRepresentantes = new int[0];
+    int* vetorRepresentantes = new int[0];
 
     double** vetorDistanciaEuclidiana;
+    double* vetorMedia = new double[0];
 
     string linhaArquivo, dadosFlor;
     string* bufferDadosFlor = new string[3]; 
@@ -151,30 +201,27 @@ int main(){
 
     preencherStructFlores(structFlores, numLinha, linhaArquivo, dadosFlor, bufferDadosFlor);
 
-    escolherRepresentantes(structFlores, vetorFloresRepresentantes, k, numLinha);
+    escolherRepresentantes(structFlores, vetorRepresentantes, k, numLinha);
 
     alocarVetorDistanciaEuclidiana(vetorDistanciaEuclidiana, k, numLinha);
 
-    distanciaEuclidiana(structFlores, vetorFloresRepresentantes, vetorDistanciaEuclidiana, k, numLinha);
+    distanciaEuclidiana(structFlores, vetorRepresentantes, vetorDistanciaEuclidiana, k, numLinha);
+
+    distribuirGrupos(structFlores, vetorDistanciaEuclidiana, k, numLinha);
+
+    novoRepresentante(structFlores, vetorMedia, k, numLinha);
 
     criarNovoArquivo(structFlores, numLinha);
 
-    //for (int i = 1; i < numLinha; i++){ // Imprime as structs para testes
-    //    cout << "Flor " << i << " (Linha " << i + 1 << ")" << endl
-    //         << "Comprimento:" << structFlores[i].comprimentoFlor << endl
-    //         << "Largura: " << structFlores[i].larguraFlor << endl
-    //         << "Especie: " << structFlores[i].especieFlor << endl
-    //         << "Representante: " << structFlores[i].representanteGrupo << endl << endl;
-
-    for (int i = 1; i <= k; i++){ // Teste distancia euclidiana
-        for (int j = 1; j < numLinha; j++){
-            cout << "Distancia Euclidiana entre o representante " << i << " e a flor " << j << ": "
-                 << vetorDistanciaEuclidiana[i][j] << endl;
-
+    for (int i = 1; i <= k; i++){ // Deleta os vetores antes de deletar o vetor totalmente 
+        for (int j = 0; j < numLinha; j++){
+            delete[] vetorDistanciaEuclidiana[j];
         }
     }
 
-    delete[] vetorFloresRepresentantes;
+    delete[] vetorDistanciaEuclidiana;
+    delete[] vetorMedia;
+    delete[] vetorRepresentantes;
     delete[] bufferDadosFlor;
     delete[] structFlores;
 }
